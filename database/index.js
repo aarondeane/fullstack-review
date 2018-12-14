@@ -16,8 +16,13 @@ let repoSchema = new mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (/* TODO */) => {
+let save = (error, repo) => {
   // TODO: Your code here
+  if (err) {
+    throw err;
+  } else {
+
+  }
   // This function should save a repo or repos to
   // the MongoDB
 }
