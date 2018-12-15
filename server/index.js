@@ -21,12 +21,9 @@ app.post('/repos', function (req, res, next) {
   })
   .then((results) => {
     db.save(results);
+    res.end(201, results);
   })
-  .then((results) => {
-    res.statusCode(201).send();
-  })
-  
-  
+
 });
 
 app.get('/repos', function (req, res) {

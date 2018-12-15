@@ -24,8 +24,8 @@ let getReposByUsername = (username, serverCB) => {
       const data = JSON.parse(response.body);
       const dataObj = data.map(obj => {
         let repo = {};
+        repo.user = username;
         repo.name = obj.name;
-        repo.full_name = obj.full_name;
         return repo;
       });        
       serverCB(null, dataObj);

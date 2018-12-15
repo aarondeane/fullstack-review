@@ -8,21 +8,23 @@ db.once('open', function() {
 })
 
 let repoSchema = new mongoose.Schema({
+  user: String,
   name: String,
-  full_name: String,
+  updated: {
+    type: Date,
+    default: Date.now()
+  },
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (error, repo) => {
-  // TODO: Your code here
-  if (err) {
-    throw err;
-  } else {
-    console.log('Hi from the DB');
-  }
-  // This function should save a repo or repos to
-  // the MongoDB
+let save = (data) => {
+  data.forEach(repo => {
+    let document = new Repo(repo);
+    document.save((err) => {
+      if(err) return handleError(err);
+    })
+  });
 }
 
 module.exports.save = save;
