@@ -10,6 +10,7 @@ db.once('open', function() {
 let repoSchema = new mongoose.Schema({ // define our document schema
   user: String,
   name: String,
+  avatar: String,
   created: {
     type: Date,
     default: Date.now()

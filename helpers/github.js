@@ -26,6 +26,7 @@ let getReposByUsername = (username, serverCB) => {
         let repo = {};
         repo.user = username;
         repo.name = obj.name;
+        repo.avatar = obj.owner.avatar_url;
         return repo;
       });        
       serverCB(null, dataObj);
