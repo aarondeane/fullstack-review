@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const getRepos = require('../helpers/github.js');
 const db = require('../database/index.js');
+// const Repo = require('../database/index.js')
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
@@ -21,14 +22,23 @@ app.post('/repos', function (req, res, next) {
   })
   .then((results) => {
     db.save(results);
-    res.end(201, results);
+    res.status(201).end(results);
+  })
+  .catch((error) => {
+    return handleError(error);
   })
 
 });
 
 app.get('/repos', function (req, res) {
-  // TODO - your code here!
-  // This route should send back the top 25 repos
+  db.Repo.find((err, repos) => {
+    if (err) {
+      return handleError(err);
+    } 
+    console.log('Here is the GET: ');
+    res.json(repos);
+  });
+      
 });
 
 let port = 1128;

@@ -24,6 +24,14 @@ class App extends React.Component {
     });
   }
 
+  componentDidMount() {
+    $.get('/repos', (data) =>{
+      this.setState({
+        repos: data
+      });
+    });
+  }
+
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
