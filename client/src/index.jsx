@@ -15,13 +15,12 @@ class App extends React.Component {
 
   search (term) {  
     console.log(`${term} was searched`);
-    $.post('/repos', (term), (err, results) => {
-      if(err) {
-        console.log(err);
-      } else {
-        console.log(results);
-      }
-    });
+    $.post('/repos', (term), (results) => {
+      let data = JSON.parse(results);
+      this.setState({
+        repos: data
+      })
+    })
   }
 
   componentDidMount() {

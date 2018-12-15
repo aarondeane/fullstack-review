@@ -9,7 +9,7 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.post('/repos', function (req, res, next) {
+app.post('/repos', function (req, res) {
   let username = Object.keys(req.body)[0];
   let data = new Promise((resolve, reject) => {
     getRepos.getReposByUsername(username, (err, results) => {
@@ -22,12 +22,11 @@ app.post('/repos', function (req, res, next) {
   })
   .then((results) => {
     db.save(results);
-    res.status(201).end(results);
+    res.status(201).end(JSON.stringify(results));
   })
-  .catch((error) => {
-    return handleError(error);
+  .catch((err) => {
+    return handleError(err);
   })
-
 });
 
 app.get('/repos', function (req, res) {
