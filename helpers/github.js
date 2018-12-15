@@ -1,7 +1,7 @@
 const request = require('request');
 const config = require('../config.js');
 
-let getReposByUsername = (username, callback) => {
+let getReposByUsername = (username, serverCB) => {
   console.log('get repos invoked', username);
   // TODO - Use the request module to request repos for a specific
   // user from the github API
@@ -12,25 +12,23 @@ let getReposByUsername = (username, callback) => {
     url: `https://api.github.com/users/${username}/repos`,
     headers: {
       'User-Agent': 'request',
-      'Authorization': `token ${config.TOKEN}`
+      'Authorization': `token ${config.TOKEN}`,
     }
   };
 
   function callback(err, response) {
     if(err) {
-      console.log(err);
-    }else{
+      serverCB(err);
+    } else {
       console.log('successful request for data from Github');
-      let data = JSON.parse(response.body);
-      let dataObj = data.map(obj => {
-        let repo = {
-            id: obj.id,
-            name: obj.name,
-            full_name: obj.full_name,
-            }
-          return repo;
-          });        
-      callback(dataObj);
+      const data = JSON.parse(response.body);
+      const dataObj = data.map(obj => {
+        let repo = {};
+        repo.name = obj.name;
+        repo.full_name = obj.full_name;
+        return repo;
+      });        
+      serverCB(null, dataObj);
     }
   }
 

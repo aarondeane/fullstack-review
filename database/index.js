@@ -8,10 +8,8 @@ db.once('open', function() {
 })
 
 let repoSchema = new mongoose.Schema({
-  id: Int,
   name: String,
   full_name: String,
-  data: String, // takes in full response object to get _url later
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
@@ -21,7 +19,7 @@ let save = (error, repo) => {
   if (err) {
     throw err;
   } else {
-
+    console.log('Hi from the DB');
   }
   // This function should save a repo or repos to
   // the MongoDB
