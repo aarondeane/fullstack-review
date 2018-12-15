@@ -10,6 +10,10 @@ db.once('open', function() {
 let repoSchema = new mongoose.Schema({ // define our document schema
   user: String,
   name: String,
+  full_name: {
+    type: String,
+    unique: true
+  },
   avatar: String,
   created: {
     type: Date,
@@ -22,11 +26,25 @@ let Repo = mongoose.model('Repo', repoSchema);// Create our model, 'Repo' which 
 let save = (data) => {
   data.forEach(repo => {
     let document = new Repo(repo);
-    document.save((err) => {
-      if(err) return handleError(err);
-    })
+    if(Repo.find({full_name: document.full_name}, (err, result) => { 
+      if(err){
+        return err;
+      } else {
+        result.length === 0;
+      }
+    })) {
+      document.save((err) => {
+        if (err) return handleError(err);
+      })
+    }
+
+    // document.save((err) => {
+    //   if(err) return handleError(err);
+    // })
   });
 }
+
+
 
 
 module.exports.save = save;
