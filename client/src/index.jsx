@@ -10,17 +10,18 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-
   }
 
   search (term) {  
+    let that = this;
     console.log(`${term} was searched`);
-    $.post('/repos', (term), (results) => {
-      let data = JSON.parse(results);
-      this.setState({
-        repos: data
-      })
-    })
+    $.post('/repos', (term))
+    .done(()=> {$.get('/repos', (results) => {
+        that.setState({
+          repos: results,
+        });
+      })}
+    )
   }
 
   componentDidMount() {

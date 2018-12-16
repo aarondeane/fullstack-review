@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 app.post('/repos', function (req, res) {
   let username = Object.keys(req.body)[0];
-  let data = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     getRepos.getReposByUsername(username, (err, results) => {
       if(err) {
         reject(err);
@@ -21,11 +21,13 @@ app.post('/repos', function (req, res) {
     })
   })
   .then((results) => {
-    db.save(results);
-    res.status(201).end(JSON.stringify(results));
+    return db.save(results)
+  })
+  .then((results)=> {
+    res.status(201).end();
   })
   .catch((err) => {
-    return handleError(err);
+    return err;
   })
 });
 
@@ -36,7 +38,8 @@ app.get('/repos', function (req, res) {
     } 
     console.log('Here is the GET: ');
     res.json(repos);
-  });
+  })
+  .limit(25);
       
 });
 
